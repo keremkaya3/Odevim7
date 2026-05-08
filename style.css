@@ -1,4 +1,4 @@
-/* [ŞART: CSS Değişkenleri - En az 8 adet] */
+/* [ŞART: CSS Değişkenleri] */
 :root {
     --gold: #d4af37;
     --dark: #050505;
@@ -10,6 +10,7 @@
     --anim-speed: 0.6s;
     --border-glow: rgba(212, 175, 55, 0.2);
     --border-thin: 1px solid rgba(255, 255, 255, 0.08);
+    --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -46,10 +47,9 @@ body {
     transition: color var(--anim-speed);
 }
 .nav-links a:hover { color: var(--gold); }
-
 .nav-btn { border: 1px solid var(--gold); padding: 8px 20px; color: var(--gold) !important; }
 
-/* Hero & Animation */
+/* Hero */
 .hero {
     height: 100vh;
     background: url('https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
@@ -63,9 +63,7 @@ body {
 
 .hero-content { position: relative; z-index: 10; padding-left: 8%; }
 
-/* [ŞART: Position Absolute/Relative] Badge */
 .badge-wrapper { position: relative; display: inline-block; }
-
 .badge {
     position: absolute; top: -35px; left: 0;
     background: var(--gold); color: #000;
@@ -83,6 +81,8 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
+.hero-desc { margin-top: 20px; color: var(--text-dim); max-width: 500px; line-height: 1.6; }
+
 .stats-row { display: flex; gap: 40px; margin-top: 40px; }
 .stat-item { color: var(--text-dim); font-size: 0.7rem; letter-spacing: 2px; }
 .stat-item span { display: block; font-size: 1.5rem; color: var(--gold); font-weight: 800; }
@@ -93,7 +93,7 @@ body {
     padding: 120px 50px; gap: 80px;
 }
 
-/* 2. Position Sticky: Sidebar */
+/* Sidebar */
 .sidebar { flex: 1; }
 .sticky-panel {
     position: sticky; top: 120px;
@@ -101,21 +101,15 @@ body {
 }
 
 .gold-line { width: 40px; height: 2px; background: var(--gold); margin-bottom: 20px; }
-
 .side-specs { list-style: none; margin: 25px 0; border-top: var(--border-thin); padding-top: 20px; }
 .side-specs li { margin-bottom: 10px; color: var(--text-dim); font-size: 0.85rem; }
 
-/* [ŞART: Hover Geçişi] */
 .btn-side {
     width: 100%; padding: 15px; background: transparent; color: var(--gold);
     border: 1px solid var(--gold); cursor: pointer; font-weight: 800;
-    transition: var(--transition); /* 3 elementli geçişten biri */
+    transition: var(--transition);
 }
-
-.btn-side:hover {
-    background: var(--gold); color: #000;
-    transform: translateY(-5px);
-}
+.btn-side:hover { background: var(--gold); color: #000; transform: translateY(-5px); }
 
 /* Main Details */
 .details { flex: 2.5; }
@@ -126,9 +120,8 @@ body {
 .specs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
 .grid-card {
     padding: 30px; background: #080808; border-bottom: 2px solid #1a1a1a;
-    transition: border-color 0.4s; /* 3 elementli geçişten ikincisi */
+    transition: border-color 0.4s;
 }
-
 .grid-card:hover { border-color: var(--gold); }
 .grid-card h4 { color: var(--gold); font-size: 0.75rem; letter-spacing: 1px; margin-bottom: 10px; }
 .grid-card p { font-size: 0.9rem; color: var(--text-dim); }
@@ -136,12 +129,8 @@ body {
 /* Gallery */
 .gallery-wrapper { display: flex; flex-direction: column; gap: 40px; }
 .relative-box { position: relative; overflow: hidden; }
-.relative-box img { 
-    width: 100%; display: block; 
-    transition: transform 0.8s; /* 3 elementli geçişten üçüncüsü */
-}
+.relative-box img { width: 100%; display: block; transition: transform 0.8s; }
 .relative-box:hover img { transform: scale(1.03); }
-
 .abs-tag {
     position: absolute; bottom: 20px; left: 20px;
     background: var(--gold); color: #000; padding: 5px 15px;
@@ -151,7 +140,36 @@ body {
 /* Footer */
 footer { padding: 100px 0; text-align: center; border-top: var(--border-thin); opacity: 0.5; }
 
-@media (max-width: 1000px) {
-    .container { flex-direction: column; }
+/* --- RESPONSIVE KATMANI --- */
+
+.nav-toggler { display: none; cursor: pointer; padding: 10px; }
+.nav-toggler span, .nav-toggler span::before, .nav-toggler span::after {
+    display: block; background: var(--gold); height: 2px; width: 25px; position: relative; transition: 0.3s;
+}
+.nav-toggler span::before { content: ""; position: absolute; top: -8px; width: 100%; }
+.nav-toggler span::after { content: ""; position: absolute; top: 8px; width: 100%; }
+
+@media (max-width: 1024px) {
+    .container { flex-direction: column; padding: 80px 20px; gap: 50px; }
+    .sidebar { width: 100%; order: 2; }
+    .sticky-panel { position: relative; top: 0; }
+    .hero-content { padding-left: 5%; }
+}
+
+@media (max-width: 768px) {
+    .nav-toggler { display: block; z-index: 1001; }
+    .nav-links {
+        position: fixed; top: 0; right: -100%; height: 100vh; width: 75%;
+        background: rgba(5, 5, 5, 0.98); flex-direction: column;
+        justify-content: center; transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        border-left: var(--border-thin);
+    }
+    #nav-check:checked ~ .nav-links { right: 0; }
+    #nav-check:checked ~ .nav-toggler span { background: transparent; }
+    #nav-check:checked ~ .nav-toggler span::before { transform: rotate(45deg); top: 0; }
+    #nav-check:checked ~ .nav-toggler span::after { transform: rotate(-45deg); top: 0; }
+
+    .hero-title { font-size: 3.2rem; }
+    .stats-row { flex-wrap: wrap; gap: 20px; }
     .specs-grid { grid-template-columns: 1fr; }
 }
